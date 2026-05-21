@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>연극 &lt;뇌우&gt;</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="site-header" aria-label="홈페이지 헤더">
+      <nav class="header-nav header-nav-left" aria-label="주요 페이지">
+        <a href="./page1.html">ABOUT</a>
+        <a href="./page2.html">PROCESS</a>
+        <a href="./page3.html">CAST</a>
+      </nav>
+
+      <a class="brand" href="./index.html" aria-label="연극 뇌우 홈">
+        <img src="./assets/header-title.png" alt="thunderstorm 뇌우" />
+      </a>
+
+      <nav class="header-nav header-nav-right" aria-label="아카이브와 연락처">
+        <a href="./page4.html">ARCHIVE</a>
+        <a href="https://www.instagram.com/karts.thunderstorm?utm_source=ig_web_button_share_sheet&amp;igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer">CONTACT</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero" aria-label="연극 뇌우 메인 비주얼">
+        <a class="hero-panel hero-panel-left" href="./page1.html" aria-label="ABOUT 페이지로 이동">
+          <img
+            src="./assets/milk.png"
+            alt="기울어진 우유잔"
+          />
+          <span class="hero-overlay" aria-hidden="true">
+            <span class="hero-arrow"></span>
+            <span class="hero-title">ABOUT</span>
+          </span>
+        </a>
+
+        <a class="hero-panel hero-panel-center" href="./page2.html" aria-label="PROCESS 페이지로 이동">
+          <img
+            src="./assets/clock.png"
+            alt="책상 위의 손목시계"
+          />
+          <span class="hero-overlay" aria-hidden="true">
+            <span class="hero-arrow"></span>
+            <span class="hero-title">PROCESS</span>
+          </span>
+        </a>
+
+        <a class="hero-panel hero-panel-right" href="./page3.html" aria-label="CAST 페이지로 이동">
+          <img
+            src="./assets/gun.png"
+            alt="풀숲 위의 권총"
+          />
+          <span class="hero-overlay" aria-hidden="true">
+            <span class="hero-arrow"></span>
+            <span class="hero-title">CAST</span>
+          </span>
+        </a>
+      </section>
+
+      <section class="intro" id="about">
+        <div>
+          <p class="section-kicker">A storm inside the house</p>
+          <h2>침묵 위로 번지는 습기, 비밀, 그리고 가족의 균열.</h2>
+        </div>
+        <p>
+          투명한 비닐과 창백한 빛, 정지된 인물의 이미지를 중심으로
+          연극 &lt;뇌우&gt;의 불안하고 차가운 분위기를 담는 홈페이지
+          레이아웃 초안입니다.
+        </p>
+      </section>
+
+      <section class="feature-grid" aria-label="홈페이지 섹션 미리보기">
+        <article>
+          <span>01</span>
+          <h3>Synopsis</h3>
+          <p>작품의 핵심 줄거리와 인물 관계를 소개하는 영역</p>
+        </article>
+        <article>
+          <span>02</span>
+          <h3>Cast</h3>
+          <p>배우 프로필과 배역 정보를 보여주는 영역</p>
+        </article>
+        <article>
+          <span>03</span>
+          <h3>Schedule</h3>
+          <p>공연 날짜, 장소, 러닝타임, 관람 등급을 정리하는 영역</p>
+        </article>
+      </section>
+    </main>
+      <script>
+      const header = document.querySelector(".site-header");
+      let lastScrollY = window.scrollY;
+
+      window.addEventListener("scroll", () => {
+        const currentScrollY = window.scrollY;
+        const isScrollingDown = currentScrollY > lastScrollY;
+
+        if (currentScrollY <= 8) {
+          header.classList.remove("is-hidden");
+        } else if (isScrollingDown && currentScrollY > 80) {
+          header.classList.add("is-hidden");
+        } else if (!isScrollingDown) {
+          header.classList.remove("is-hidden");
+        }
+
+        lastScrollY = currentScrollY;
+      }, { passive: true });
+    </script>
+  </body>
+</html>

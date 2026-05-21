@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>연극 &lt;뇌우&gt;</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="site-header" aria-label="홈페이지 헤더">
+      <nav class="header-nav header-nav-left" aria-label="주요 페이지">
+        <a href="./page1.html">ABOUT</a>
+        <a href="./page2.html">PROCESS</a>
+        <a href="./page3.html">CAST</a>
+      </nav>
+
+      <a class="brand" href="./index.html" aria-label="연극 뇌우 홈">
+        <img src="./assets/header-title.png" alt="thunderstorm 뇌우" />
+      </a>
+
+      <nav class="header-nav header-nav-right" aria-label="아카이브와 연락처">
+        <a href="./page4.html">ARCHIVE</a>
+        <a href="https://www.instagram.com/karts.thunderstorm?utm_source=ig_web_button_share_sheet&amp;igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer">CONTACT</a>
+      </nav>
+    </header>
+
+    <main class="subpage">
+      <section class="subpage-title">
+        <p>PAGE 4</p>
+        <h1>ARCHIVE</h1>
+      </section>
+    </main>
+      <script>
+      const header = document.querySelector(".site-header");
+      let lastScrollY = window.scrollY;
+
+      window.addEventListener("scroll", () => {
+        const currentScrollY = window.scrollY;
+        const isScrollingDown = currentScrollY > lastScrollY;
+
+        if (currentScrollY <= 8) {
+          header.classList.remove("is-hidden");
+        } else if (isScrollingDown && currentScrollY > 80) {
+          header.classList.add("is-hidden");
+        } else if (!isScrollingDown) {
+          header.classList.remove("is-hidden");
+        }
+
+        lastScrollY = currentScrollY;
+      }, { passive: true });
+    </script>
+  </body>
+</html>
