@@ -257,7 +257,7 @@ main {
   margin: 0;
   color: #343434;
   font-family: "KoPub Batang", "KoPub Batang Pro", "Noto Serif KR", serif;
-  font-size: clamp(18px, 1.8vw, 28px);
+  font-size: 12pt;
   font-weight: 300;
   line-height: 1.7;
 }
@@ -275,7 +275,7 @@ main {
   background: #efeeea;
   color: #000000;
   font-family: "KoPub Batang", "KoPub Batang Pro", "Noto Serif KR", serif;
-  font-size: 14pt;
+  font-size: 12pt;
   font-weight: 300;
   line-height: 1.6;
   text-align: center;
@@ -291,6 +291,7 @@ main {
 
 .performance-card h2 {
   margin-bottom: 86px;
+  font-size: calc(1em + 1.5pt);
 }
 
 .info-list {
@@ -305,6 +306,15 @@ main {
   grid-template-columns: 170px minmax(0, 1fr);
   gap: 48px;
   text-align: left;
+}
+
+.mobile-only {
+  display: none;
+}
+
+.runtime-lines {
+  justify-self: center;
+  text-align: right;
 }
 
 .ticket-info {
@@ -353,35 +363,59 @@ main {
 
 @media (max-width: 920px) {
   .site-header {
-    height: 54px;
-    padding: 4px 16px;
+    display: grid;
+    height: 132px;
+    grid-template-columns: repeat(5, auto);
+    grid-template-rows: 70px 42px;
+    align-content: center;
+    justify-content: center;
+    column-gap: clamp(18px, 5.4vw, 34px);
+    row-gap: 2px;
+    padding: 10px 14px 8px;
+  }
+
+  .brand {
+    position: static;
+    grid-column: 1 / -1;
+    grid-row: 1;
+    transform: none;
+  }
+
+  .brand img {
+    width: min(175px, 46vw);
   }
 
   .header-nav {
-    gap: 16px;
-    font-size: 9px;
+    position: static;
+    grid-row: 2;
+    display: contents;
+    font-size: 10.5px;
+    transform: none;
   }
 
-  .header-nav-left {
-    left: 14px;
+  .header-nav a {
+    display: block;
+    align-self: center;
+    white-space: nowrap;
   }
 
-  .header-nav-right {
-    right: 14px;
-    gap: 12px;
+  .header-nav-left a:nth-child(1) { grid-column: 1; }
+  .header-nav-left a:nth-child(2) { grid-column: 2; }
+  .header-nav-left a:nth-child(3) { grid-column: 3; }
+  .header-nav-right a:nth-child(1) { grid-column: 4; }
+  .header-nav-right a:nth-child(2) { grid-column: 5; }
+
+  main {
+    padding-top: 132px;
   }
 
   .hero {
-    min-height: calc(100svh - 54px);
+    min-height: calc(100svh - 132px);
     grid-template-columns: 1fr;
   }
 
   .hero-panel {
-    min-height: 31svh;
-  }
-
-  .brand img {
-    width: min(185px, 49vw);
+    min-height: calc((100svh - 132px) / 3);
   }
 
   .hero-panel-center,
@@ -395,6 +429,10 @@ main {
     padding: 96px 20px;
   }
 
+  .home-quote p {
+    font-size: 11pt;
+  }
+
   .performance-section {
     padding: 40px 20px 72px;
   }
@@ -402,7 +440,7 @@ main {
   .performance-card {
     padding: 64px 22px 72px;
     border-radius: 34px;
-    font-size: 13pt;
+    font-size: 11pt;
   }
 
   .performance-card h2 {
@@ -417,6 +455,10 @@ main {
     grid-template-columns: 1fr;
     gap: 10px;
     text-align: center;
+  }
+
+  .mobile-only {
+    display: block;
   }
 
   .ticket-info {
