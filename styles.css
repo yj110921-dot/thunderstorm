@@ -262,6 +262,69 @@ main {
   line-height: 1.7;
 }
 
+.performance-section {
+  padding: 64px 5vw 96px;
+  background: #ffffff;
+}
+
+.performance-card {
+  width: min(1320px, 100%);
+  margin: 0 auto;
+  padding: clamp(72px, 8vw, 120px) clamp(28px, 7vw, 120px);
+  border-radius: 50px;
+  background: #efeeea;
+  color: #000000;
+  font-family: "KoPub Batang", "KoPub Batang Pro", "Noto Serif KR", serif;
+  font-size: 18pt;
+  font-weight: 300;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.performance-card h2,
+.performance-card h3,
+.performance-card p {
+  margin: 0;
+  font: inherit;
+  color: inherit;
+}
+
+.performance-card h2 {
+  margin-bottom: 86px;
+}
+
+.info-list {
+  display: grid;
+  width: min(680px, 100%);
+  margin: 0 auto;
+  gap: 48px;
+}
+
+.info-row {
+  display: grid;
+  grid-template-columns: 170px minmax(0, 1fr);
+  gap: 48px;
+  text-align: left;
+}
+
+.ticket-info {
+  width: min(760px, 100%);
+  margin: 190px auto 0;
+  text-align: center;
+}
+
+.ticket-info h2 {
+  margin-bottom: 54px;
+}
+
+.ticket-info h3 {
+  margin-bottom: 48px;
+}
+
+.ticket-info p + p {
+  margin-top: 34px;
+}
+
 .subpage {
   min-height: 100svh;
   padding-top: 54px;
@@ -330,5 +393,45 @@ main {
   .home-quote {
     min-height: 76svh;
     padding: 96px 20px;
+  }
+
+  .performance-section {
+    padding: 40px 20px 72px;
+  }
+
+  .performance-card {
+    padding: 64px 22px 72px;
+    border-radius: 34px;
+    font-size: 14pt;
+  }
+
+  .performance-card h2 {
+    margin-bottom: 52px;
+  }
+
+  .info-list {
+    gap: 36px;
+  }
+
+  .info-row {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    text-align: center;
+  }
+
+  .ticket-info {
+    margin-top: 112px;
+  }
+
+  .ticket-info h2 {
+    margin-bottom: 40px;
+  }
+
+  .ticket-info h3 {
+    margin-bottom: 34px;
+  }
+
+  .ticket-info p + p {
+    margin-top: 26px;
   }
 }
