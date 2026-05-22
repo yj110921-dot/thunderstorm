@@ -244,73 +244,22 @@ main {
   object-position: 50% 50%;
 }
 
-.intro {
+.home-quote {
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
-  gap: 48px;
-  padding: 96px 6vw 72px;
-  border-bottom: 1px solid var(--line);
+  min-height: 82svh;
+  place-items: center;
+  padding: 120px 24px;
+  background: #ffffff;
+  text-align: center;
 }
 
-.section-kicker {
-  margin: 0 0 18px;
-  color: var(--muted);
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-
-.intro h2 {
-  max-width: 780px;
+.home-quote p {
   margin: 0;
-  font-family: Georgia, "Times New Roman", "Apple SD Gothic Neo", serif;
-  font-size: clamp(32px, 5vw, 68px);
-  font-weight: 500;
-  line-height: 1.05;
-}
-
-.intro > p {
-  margin: 6px 0 0;
-  color: #3c3b37;
-  font-size: 17px;
-  line-height: 1.8;
-}
-
-.feature-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  border-bottom: 1px solid var(--line);
-}
-
-.feature-grid article {
-  min-height: 250px;
-  padding: 28px;
-  border-right: 1px solid var(--line);
-}
-
-.feature-grid article:last-child {
-  border-right: 0;
-}
-
-.feature-grid span {
-  color: var(--muted);
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: 15px;
-}
-
-.feature-grid h3 {
-  margin: 72px 0 12px;
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: 30px;
-  font-weight: 500;
-}
-
-.feature-grid p {
-  max-width: 320px;
-  margin: 0;
-  color: #55534e;
-  line-height: 1.65;
+  color: #343434;
+  font-family: "KoPub Batang", "KoPub Batang Pro", "Noto Serif KR", serif;
+  font-size: clamp(18px, 1.8vw, 28px);
+  font-weight: 300;
+  line-height: 1.7;
 }
 
 .subpage {
@@ -378,19 +327,8 @@ main {
     border-top: 1px solid rgba(255, 255, 255, 0.42);
   }
 
-  .intro,
-  .feature-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .intro {
-    gap: 24px;
-    padding: 72px 20px 56px;
-  }
-
-  .feature-grid article {
-    min-height: 210px;
-    border-right: 0;
-    border-bottom: 1px solid var(--line);
+  .home-quote {
+    min-height: 76svh;
+    padding: 96px 20px;
   }
 }
