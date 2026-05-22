@@ -275,7 +275,7 @@ main {
   background: #efeeea;
   color: #000000;
   font-family: "KoPub Batang", "KoPub Batang Pro", "Noto Serif KR", serif;
-  font-size: 18pt;
+  font-size: 14pt;
   font-weight: 300;
   line-height: 1.6;
   text-align: center;
@@ -402,7 +402,7 @@ main {
   .performance-card {
     padding: 64px 22px 72px;
     border-radius: 34px;
-    font-size: 14pt;
+    font-size: 13pt;
   }
 
   .performance-card h2 {
