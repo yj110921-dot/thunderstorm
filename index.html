@@ -101,6 +101,12 @@
         </div>
       </section>
     </main>
+
+    <footer class="site-footer">
+      <p>Presented by Korea National University of Arts, School of Drama</p>
+      <p>Designed &amp; developed by YEJIN YOON<br /><a href="https://www.instagram.com/if_____aurora?utm_source=ig_web_button_share_sheet&amp;igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer">@if_____aurora ↗</a></p>
+      <p>© 2026 All rights reserved.</p>
+    </footer>
       <script>
       const header = document.querySelector(".site-header");
       let lastScrollY = window.scrollY;
@@ -119,6 +125,31 @@
 
         lastScrollY = currentScrollY;
       }, { passive: true });
+
+      const revealTargets = document.querySelectorAll(".home-quote p, .performance-card h2, .performance-card h3, .performance-card p");
+
+      revealTargets.forEach((element, index) => {
+        element.classList.add("reveal-text");
+        element.style.setProperty("--reveal-delay", Math.min(index * 55, 220) + "ms");
+      });
+
+      if ("IntersectionObserver" in window) {
+        const revealObserver = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-visible");
+              revealObserver.unobserve(entry.target);
+            }
+          });
+        }, {
+          threshold: 0.18,
+          rootMargin: "0px 0px -8% 0px",
+        });
+
+        revealTargets.forEach((element) => revealObserver.observe(element));
+      } else {
+        revealTargets.forEach((element) => element.classList.add("is-visible"));
+      }
     </script>
   </body>
 </html>

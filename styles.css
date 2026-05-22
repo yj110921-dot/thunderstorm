@@ -1,3 +1,27 @@
+@font-face {
+  font-family: "KoPub Batang";
+  src: url("assets/fonts/KoPubBatangPro-Light.otf") format("opentype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "KoPub Batang";
+  src: url("assets/fonts/KoPubBatangPro-Medium.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "KoPub Batang";
+  src: url("assets/fonts/KoPubBatangPro-Bold.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --paper: #ffffff;
   --ink: #171717;
@@ -294,6 +318,33 @@ main {
   font-size: calc(1em + 1.5pt);
 }
 
+.reveal-text {
+  opacity: 0;
+  filter: blur(4px);
+  transform: translateY(22px);
+  transition:
+    opacity 900ms cubic-bezier(0.22, 1, 0.36, 1),
+    filter 900ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, filter, transform;
+}
+
+.reveal-text.is-visible {
+  opacity: 1;
+  filter: blur(0);
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-text {
+    opacity: 1;
+    filter: none;
+    transform: none;
+    transition: none;
+  }
+}
+
 .info-list {
   display: grid;
   width: min(680px, 100%);
@@ -308,11 +359,16 @@ main {
   text-align: left;
 }
 
+.info-row > p {
+  justify-self: start;
+}
+
 .mobile-only {
   display: none;
 }
 
 .runtime-lines {
+  width: max-content;
   justify-self: center;
   text-align: right;
 }
@@ -333,6 +389,35 @@ main {
 
 .ticket-info p + p {
   margin-top: 34px;
+}
+
+.site-footer {
+  padding: 140px 24px 56px;
+  background: #ffffff;
+  color: rgba(23, 23, 23, 0.4);
+  font-family: "Helvetica Neue", Arial, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+  font-size: 10pt;
+  font-weight: 300;
+  line-height: 1.7;
+  text-align: center;
+}
+
+.site-footer p {
+  margin: 0;
+}
+
+.site-footer p + p {
+  margin-top: 22px;
+}
+
+.site-footer a {
+  text-decoration: none;
+}
+
+.site-footer a:hover,
+.site-footer a:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 4px;
 }
 
 .subpage {
@@ -457,6 +542,10 @@ main {
     text-align: center;
   }
 
+  .info-row > p {
+    justify-self: center;
+  }
+
   .mobile-only {
     display: block;
   }
@@ -475,5 +564,10 @@ main {
 
   .ticket-info p + p {
     margin-top: 26px;
+  }
+
+  .site-footer {
+    padding: 104px 20px 44px;
+    font-size: 9.5pt;
   }
 }
