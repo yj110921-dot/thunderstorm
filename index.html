@@ -64,11 +64,37 @@
         <p>우리는 모두 억눌리고 있어. 모두 똑같아...</p>
       </section>
 
+      <section class="retriever-section" aria-label="리트리버 흑백 이미지">
+        <div class="retriever-marquee" aria-hidden="true">
+          <div class="retriever-track">
+            <div class="retriever-group">
+              <img src="./assets/retriever/retriever-1.png" alt="" />
+              <img src="./assets/retriever/retriever-2.png" alt="" />
+              <img src="./assets/retriever/retriever-3.png" alt="" />
+              <img src="./assets/retriever/retriever-4.png" alt="" />
+              <img src="./assets/retriever/retriever-5.png" alt="" />
+              <img src="./assets/retriever/retriever-6.png" alt="" />
+              <img src="./assets/retriever/retriever-7.png" alt="" />
+              <img src="./assets/retriever/retriever-8.png" alt="" />
+              <img src="./assets/retriever/retriever-9.png" alt="" />
+              <img src="./assets/retriever/retriever-10.png" alt="" />
+            </div>
+          </div>
+        </div>
+        <p class="retriever-note">AI 생성 이미지에 디지털 후가공 작업이 적용되었습니다.</p>
+      </section>
+
       <section class="performance-section" aria-label="공연 정보와 예매 안내">
         <div class="performance-card">
-          <h2>공연 정보</h2>
+          <div class="performance-layout performance-layout-top">
+            <figure class="poster-frame poster-frame-left">
+              <img src="./assets/posters/poster-abstract.png" alt="연극 뇌우 추상 포스터" />
+            </figure>
 
-          <div class="info-list">
+            <div class="performance-info-panel">
+              <h2>공연 정보</h2>
+
+              <div class="info-list">
             <div class="info-row">
               <h3>공연 일시</h3>
               <p>1회차 | 2026.05.28. (목) 19:00<br />2회차 | 2026.05.29. (금) 19:00<br />3회차 | 2026.05.30. (토) 15:00</p>
@@ -88,15 +114,23 @@
               <h3>관람 연령</h3>
               <p>만 15세 이상 관람가</p>
             </div>
+              </div>
+            </div>
           </div>
 
-          <div class="ticket-info">
+          <div class="performance-layout performance-layout-bottom">
+            <div class="ticket-info">
             <h2>예매 안내</h2>
             <h3>현장 예매</h3>
             <p>온라인 사전 예매 관객 취소 및 노쇼 등으로 발생한 잔여석에 한해 운영됩니다.</p>
             <p>공연 시작 60분 전부터 티켓 부스에서 예매 대기 명단 작성이 가능합니다.</p>
             <p>공연 시작 5분 전부터 예매 대기 명단 순서대로 호명이 진행되며,<br />호명 시 부재할 경우 다음 대기자에게 기회가 부여됩니다.</p>
             <p>현장 상황에 따라 대기 명단을 작성하였더라도 관람이 불가할 수 있습니다.</p>
+            </div>
+
+            <figure class="poster-frame poster-frame-right">
+              <img src="./assets/posters/poster-figurative.png" alt="연극 뇌우 구상 포스터" />
+            </figure>
           </div>
         </div>
       </section>
@@ -126,7 +160,39 @@
         lastScrollY = currentScrollY;
       }, { passive: true });
 
-      const revealTargets = document.querySelectorAll(".home-quote p, .performance-card h2, .performance-card h3, .performance-card p");
+      const retrieverTrack = document.querySelector(".retriever-track");
+
+      if (retrieverTrack) {
+        let retrieverX = 0;
+        const retrieverSpeed = 0.45;
+
+        const moveRetriever = () => {
+          retrieverX -= retrieverSpeed;
+          const firstImage = retrieverTrack.querySelector("img");
+
+          if (firstImage) {
+            const imageWidth = firstImage.getBoundingClientRect().width;
+            const trackGap = parseFloat(getComputedStyle(retrieverTrack).columnGap) || 0;
+
+            if (Math.abs(retrieverX) >= imageWidth + trackGap) {
+              retrieverTrack.appendChild(firstImage);
+              retrieverX += imageWidth + trackGap;
+            }
+          }
+
+          retrieverTrack.style.transform = "translateX(" + retrieverX + "px)";
+          requestAnimationFrame(moveRetriever);
+        };
+
+        requestAnimationFrame(moveRetriever);
+      }
+
+      const quoteTarget = document.querySelector(".home-quote p");
+      const revealTargets = document.querySelectorAll(".performance-card h2, .performance-card h3, .performance-card p");
+
+      if (quoteTarget) {
+        quoteTarget.classList.add("ink-reveal");
+      }
 
       revealTargets.forEach((element, index) => {
         element.classList.add("reveal-text");
@@ -146,8 +212,16 @@
           rootMargin: "0px 0px -8% 0px",
         });
 
+        if (quoteTarget) {
+          revealObserver.observe(quoteTarget);
+        }
+
         revealTargets.forEach((element) => revealObserver.observe(element));
       } else {
+        if (quoteTarget) {
+          quoteTarget.classList.add("is-visible");
+        }
+
         revealTargets.forEach((element) => element.classList.add("is-visible"));
       }
     </script>
