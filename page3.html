@@ -24,12 +24,117 @@
       </nav>
     </header>
 
-    <main class="subpage">
-      <section class="subpage-title">
-        <p>PAGE 3</p>
-        <h1>CAST</h1>
+    <main class="cast-page">
+      <section class="cast-section cast-section-intro" aria-label="캐스트">
+        <figure class="cast-profile-image">
+          <img src="./assets/page3/profile-2-17.png" alt="뇌우 프로필 이미지 모음" />
+        </figure>
+
+        <div class="cast-list">
+          <h1>캐스트</h1>
+          <p>조우판이 | 손현지</p>
+          <p>조우푸위안 | 유시준</p>
+          <p>조우핑 | 강민규</p>
+          <p>조우충 | 황재훈</p>
+          <p>루스핑 | 박은진</p>
+          <p>루구이 | 김기붕</p>
+          <p>루쓰펑 | 정효빈</p>
+          <p>하인 | 김민주</p>
+        </div>
+      </section>
+
+      <section class="relationship-section" aria-label="인물 관계도">
+        <div class="relationship-heading">
+          <h2>인물 관계도</h2>
+          <p>아래 원을 클릭하시면 스포일러가 포함된 인물관계도를 볼 수 있습니다.</p>
+          <button class="spoiler-button" type="button" aria-label="스포일러 관계도 보기" aria-pressed="false">
+            <img src="./assets/page3/relationship/spoiler-button.png" alt="" />
+          </button>
+        </div>
+
+        <div class="relationship-map" data-spoiler-map>
+          <svg class="relationship-lines" viewBox="0 0 100 100" aria-hidden="true" preserveAspectRatio="none">
+            <path class="line-blue line-straight" pathLength="1" d="M 15.45 16.9 L 25.5 16.9" />
+            <path class="line-blue line-straight" pathLength="1" d="M 20.475 16.9 L 20.475 75.6" />
+            <path class="line-blue line-straight" pathLength="1" d="M 73.95 16.9 L 84.55 16.9" />
+            <path class="line-blue line-straight" pathLength="1" d="M 79.25 16.9 L 79.25 75.6" />
+            <path class="line-red line-straight" pathLength="1" d="M 40.95 16.9 L 58.5 16.9" />
+            <path class="line-red line-straight" pathLength="1" d="M 49.725 16.9 L 49.725 36.5" />
+            <path class="line-red line-straight" pathLength="1" d="M 43.525 36.5 L 60.925 36.5" />
+            <path class="line-red line-straight" pathLength="1" d="M 43.525 36.5 L 43.525 40.7" />
+            <path class="line-red line-straight" pathLength="1" d="M 60.925 36.5 L 60.925 40.7" />
+            <path class="line-red line-curve" pathLength="1" d="M 60.925 68.85 C 55 76, 42 80, 20.475 75.6" />
+            <path class="line-red line-curve" pathLength="1" d="M 60.925 68.85 C 65 76, 72 80, 79.25 75.6" />
+          </svg>
+
+          <figure class="relationship-person person-lu-gui">
+            <img src="./assets/page3/relationship/lu-gui.png" alt="루구이" />
+            <figcaption>루구이 (48)</figcaption>
+          </figure>
+          <figure class="relationship-person person-lu-shiping">
+            <img src="./assets/page3/relationship/lu-shiping.png" alt="루스핑" />
+            <figcaption>루스핑 (47)</figcaption>
+          </figure>
+          <figure class="relationship-person person-zhou-puyuan">
+            <img src="./assets/page3/relationship/zhou-puyuan.png" alt="조우푸위안" />
+            <figcaption>조우푸위안 (55)</figcaption>
+          </figure>
+          <figure class="relationship-person person-zhou-fanyi">
+            <img src="./assets/page3/relationship/zhou-fanyi.png" alt="조우판이" />
+            <figcaption>조우판이 (35)</figcaption>
+          </figure>
+          <figure class="relationship-person person-lu-dahai">
+            <img src="./assets/page3/relationship/lu-dahai.png" alt="루다하이" />
+            <figcaption>루다하이 (27)</figcaption>
+          </figure>
+          <figure class="relationship-person person-zhou-ping">
+            <img src="./assets/page3/relationship/zhou-ping.png" alt="조우핑" />
+            <figcaption>조우핑 (28)</figcaption>
+          </figure>
+          <figure class="relationship-person person-lu-sifeng">
+            <img src="./assets/page3/relationship/lu-sifeng.png" alt="루쓰펑" />
+            <figcaption>루쓰펑 (18)</figcaption>
+          </figure>
+          <figure class="relationship-person person-zhou-chong">
+            <img src="./assets/page3/relationship/zhou-chong.png" alt="조우충" />
+            <figcaption>조우충 (17)</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="cast-detail-section cast-detail-zhou" aria-label="조씨 가 인물 설명">
+        <div class="cast-detail-text">
+          <p><span>조우푸위안 (55)</span><span>광산회사 사장이자 조씨 가의 주인</span></p>
+          <p><span>조우판이 (35)</span><span>조우푸위안의 세 번째 처</span></p>
+          <p><span>조우핑 (28)</span><span>조우푸위안과 그의 전처 사이의 아들</span></p>
+          <p><span>조우충 (17)</span><span>조우푸위안과 조우판이 사이의 아들</span></p>
+        </div>
+
+        <figure class="cast-detail-image">
+          <img src="./assets/page3/zhou-family.jpg" alt="조씨 가 인물 사진" />
+        </figure>
+      </section>
+
+      <section class="cast-detail-section cast-detail-lu" aria-label="루씨 가 인물 설명">
+        <div class="cast-detail-text">
+          <p><span>루구이 (48)</span><span>조우씨 집 하인</span></p>
+          <p><span>루스핑 (47)</span><span>루구이의 아내이자 학교의 노동자</span></p>
+          <p><span>루쓰펑(18)</span><span>루구이와 루스핑 사이의 딸, 조우씨 집 하녀</span></p>
+          <p><span>루다하이(27)</span><span>루스핑과 전남편 사이의 아들, 광산 노동자</span></p>
+          <p class="cast-detail-continuation">총에 맞아 의식불명 상태</p>
+        </div>
+
+        <figure class="cast-detail-image">
+          <img src="./assets/page3/lu-family.jpg" alt="루씨 가 인물 사진" />
+        </figure>
       </section>
     </main>
+
+    <footer class="site-footer">
+      <p>Presented by Korea National University of Arts, School of Drama</p>
+      <p>Designed &amp; developed by YEJIN YOON<br /><a href="https://www.instagram.com/if_____aurora?utm_source=ig_web_button_share_sheet&amp;igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer">@if_____aurora ↗</a></p>
+      <p>© 2026 All rights reserved.</p>
+    </footer>
       <script>
       const header = document.querySelector(".site-header");
       let lastScrollY = window.scrollY;
@@ -48,6 +153,33 @@
 
         lastScrollY = currentScrollY;
       }, { passive: true });
+
+      const spoilerButton = document.querySelector(".spoiler-button");
+      const spoilerMap = document.querySelector("[data-spoiler-map]");
+
+      if (spoilerMap) {
+        if ("IntersectionObserver" in window) {
+          const relationshipObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                spoilerMap.classList.add("is-in-view");
+                relationshipObserver.unobserve(entry.target);
+              }
+            });
+          }, { threshold: 0.28 });
+
+          relationshipObserver.observe(spoilerMap);
+        } else {
+          spoilerMap.classList.add("is-in-view");
+        }
+      }
+
+      if (spoilerButton && spoilerMap) {
+        spoilerButton.addEventListener("click", () => {
+          const isRevealed = spoilerMap.classList.toggle("is-revealed");
+          spoilerButton.setAttribute("aria-pressed", String(isRevealed));
+        });
+      }
     </script>
   </body>
 </html>

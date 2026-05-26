@@ -711,6 +711,426 @@ main {
   font-weight: 400;
 }
 
+
+
+.process-page {
+  min-height: 100svh;
+  padding-top: 120px;
+  background: #ffffff;
+  color: #000000;
+  font-family: "KoPub Batang", "KoPub Batang Pro", "Noto Serif KR", serif;
+  font-size: 12pt;
+  font-weight: 300;
+  line-height: 1.85;
+}
+
+.process-note-nav {
+  position: fixed;
+  z-index: 35;
+  top: 54px;
+  right: 0;
+  left: 0;
+  display: grid;
+  min-height: 66px;
+  grid-template-columns: repeat(6, 1fr);
+  align-items: center;
+  border-bottom: 1px solid rgba(23, 23, 23, 0.82);
+  background: #ffffff;
+  text-align: center;
+  transition: top 720ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.site-header.is-hidden ~ .process-page .process-note-nav {
+  top: 0;
+}
+
+.process-note-nav a {
+  display: flex;
+  min-height: 66px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 12px;
+  text-decoration: none;
+  text-underline-offset: 5px;
+}
+
+.process-note-nav a:hover,
+.process-note-nav a:focus-visible {
+  text-decoration: underline;
+}
+
+.process-note-section {
+  display: flex;
+  min-height: calc(100svh - 120px);
+  align-items: flex-start;
+  justify-content: center;
+  padding: 132px 24px 168px;
+  border-bottom: 1px solid rgba(23, 23, 23, 0.82);
+  scroll-margin-top: 128px;
+}
+
+.process-note-content {
+  width: min(760px, 100%);
+  margin: 0 auto;
+  text-align: center;
+}
+
+.process-note-content h1,
+.process-note-content h2 {
+  margin: 0 0 108px;
+  font: inherit;
+  font-size: 12pt;
+  font-weight: 300;
+  line-height: 1.4;
+}
+
+.process-note-content h3 {
+  margin: 0 0 64px;
+  font: inherit;
+  font-size: 12pt;
+  font-weight: 300;
+  line-height: 1.4;
+}
+
+.process-note-content p {
+  margin: 0;
+}
+
+.process-note-content p + p {
+  margin-top: 38px;
+}
+
+.process-note-section-costume .process-note-content h3 {
+  margin-top: 72px;
+  margin-bottom: 30px;
+}
+
+.process-note-section-costume .process-note-content p + h3 {
+  margin-top: 76px;
+}
+
+.process-note-section-costume .process-note-content p + p {
+  margin-top: 30px;
+}
+
+.cast-page {
+  min-height: 100svh;
+  padding-top: 54px;
+  background: #ffffff;
+  color: #000000;
+  font-family: "KoPub Batang", "KoPub Batang Pro", "Noto Serif KR", serif;
+  font-size: 12pt;
+  font-weight: 300;
+  line-height: 1.7;
+}
+
+.cast-section {
+  position: relative;
+  display: grid;
+  min-height: calc(100svh - 54px);
+  grid-template-columns: minmax(620px, 64.5%) minmax(320px, 35.5%);
+  align-items: center;
+  border-top: 1px solid rgba(23, 23, 23, 0.82);
+  border-bottom: 1px solid rgba(23, 23, 23, 0.82);
+}
+
+.cast-section::before {
+  content: "";
+  position: absolute;
+  top: 20px;
+  bottom: 20px;
+  left: 64.5%;
+  width: 1px;
+  background: rgba(23, 23, 23, 0.82);
+  pointer-events: none;
+}
+
+.cast-profile-image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: clamp(54px, 6vw, 92px) clamp(26px, 6vw, 110px);
+}
+
+.cast-profile-image img {
+  display: block;
+  width: min(820px, 76%);
+  max-height: calc(100svh - 170px);
+  height: auto;
+  object-fit: contain;
+}
+
+.cast-list {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: clamp(54px, 7vw, 100px) clamp(28px, 6vw, 100px);
+  font-family: "KoPub Batang", "KoPub Batang Pro", "Noto Serif KR", serif;
+  font-size: 12pt;
+  font-weight: 300;
+  line-height: 1.65;
+  text-align: center;
+}
+
+.cast-list h1 {
+  display: inline-block;
+  margin: 0 0 78px;
+  font: inherit;
+  font-size: 21pt;
+  font-weight: 300;
+  line-height: 1.2;
+}
+
+.cast-list p {
+  margin: 0;
+  text-align: center;
+}
+
+.cast-list p + p {
+  margin-top: 27px;
+}
+
+
+
+.relationship-section {
+  min-height: calc(100svh - 54px);
+  padding: 94px 24px 110px;
+  border-bottom: 1px solid rgba(23, 23, 23, 0.82);
+  background: #ffffff;
+  font-family: "KoPub Batang", "KoPub Batang Pro", "Noto Serif KR", serif;
+  text-align: center;
+}
+
+.relationship-heading h2 {
+  margin: 0 0 24px;
+  font-size: 21pt;
+  font-weight: 300;
+  line-height: 1.2;
+}
+
+.relationship-heading p {
+  margin: 0;
+  color: rgba(23, 23, 23, 0.6);
+  font-size: 10pt;
+  font-weight: 300;
+  line-height: 1.5;
+}
+
+.spoiler-button {
+  display: block;
+  width: 86px;
+  height: 86px;
+  margin: 30px auto 16px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  appearance: none;
+}
+
+.spoiler-button img {
+  display: block;
+  width: 100%;
+  height: auto;
+  transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1), filter 420ms ease;
+}
+
+.spoiler-button:hover img,
+.spoiler-button:focus-visible img,
+.spoiler-button[aria-pressed="true"] img {
+  filter: saturate(1.12) brightness(1.04);
+  transform: scale(1.08);
+}
+
+.relationship-map {
+  position: relative;
+  width: min(1180px, 90vw);
+  height: 860px;
+  margin: 0 auto;
+}
+
+.relationship-lines {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.relationship-lines path {
+  fill: none;
+  opacity: 0;
+  stroke-width: 1.02;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.relationship-map.is-in-view .line-blue,
+.relationship-map.is-revealed .line-red {
+  opacity: 1;
+  animation: draw-relationship-line 1200ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.relationship-map.is-revealed .line-curve {
+  animation-duration: 900ms;
+}
+
+@keyframes draw-relationship-line {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.line-red {
+  stroke: #e28383;
+}
+
+.line-blue {
+  stroke: #5a7096;
+}
+
+.line-straight {
+  stroke-dasharray: 1;
+}
+
+.line-curve {
+  stroke-dasharray: 0.035 0.025;
+  stroke-linecap: round;
+}
+
+.relationship-person {
+  position: absolute;
+  z-index: 2;
+  width: 15.45%;
+  margin: 0;
+  font-size: 10pt;
+  font-weight: 400;
+  line-height: 1.35;
+  text-align: center;
+}
+
+.relationship-person img {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+.relationship-person figcaption {
+  margin: 0;
+}
+
+.person-lu-gui {
+  top: 2.8%;
+  left: 0;
+}
+
+.person-lu-shiping {
+  top: 2.8%;
+  left: 25.5%;
+}
+
+.person-zhou-puyuan {
+  top: 2.8%;
+  left: 58.5%;
+}
+
+.person-zhou-fanyi {
+  top: 2.8%;
+  right: 0;
+}
+
+.person-lu-dahai {
+  top: 40.7%;
+  left: 35.8%;
+}
+
+.person-zhou-ping {
+  top: 40.7%;
+  left: 53.2%;
+}
+
+.person-lu-sifeng {
+  top: 75.6%;
+  left: 12.75%;
+}
+
+.person-zhou-chong {
+  top: 75.6%;
+  left: 71.525%;
+}
+
+
+
+.cast-detail-section {
+  position: relative;
+  display: grid;
+  min-height: 610px;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  border-bottom: 1px solid rgba(23, 23, 23, 0.82);
+  background: #ffffff;
+  font-family: "KoPub Batang", "KoPub Batang Pro", "Noto Serif KR", serif;
+}
+
+.cast-detail-section::before {
+  content: "";
+  position: absolute;
+  top: 20px;
+  bottom: 20px;
+  left: 50%;
+  width: 1px;
+  background: rgba(23, 23, 23, 0.82);
+  pointer-events: none;
+}
+
+.cast-detail-text {
+  width: min(620px, 78%);
+  margin: 0 auto;
+  font-size: 12pt;
+  font-weight: 300;
+  line-height: 1.7;
+  text-align: left;
+}
+
+.cast-detail-text p {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 24px;
+  margin: 0;
+}
+
+.cast-detail-text p + p {
+  margin-top: 21px;
+}
+
+.cast-detail-text span:first-child {
+  white-space: nowrap;
+}
+
+.cast-detail-continuation {
+  display: block !important;
+  padding-left: 204px;
+  text-align: left;
+}
+
+.cast-detail-image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 70px 24px;
+}
+
+.cast-detail-image img {
+  display: block;
+  width: min(420px, 54%);
+  height: auto;
+}
+
 .about-page {
   min-height: 100svh;
   background: #ffffff;
@@ -1072,6 +1492,238 @@ main {
 
   .moving-poster-panel {
     padding: 42px 20px 64px;
+  }
+
+
+  .process-page {
+    padding-top: 220px;
+    font-size: 9.5pt;
+    line-height: 1.85;
+  }
+
+  .process-note-nav {
+    top: 132px;
+    min-height: auto;
+    grid-template-columns: repeat(3, 1fr);
+    border-top: 1px solid rgba(23, 23, 23, 0.75);
+  }
+
+  .process-note-nav a {
+    min-height: 44px;
+    padding: 0 8px;
+    font-size: 9.5pt;
+  }
+
+  .process-note-section {
+    min-height: auto;
+    padding: 76px 24px 104px;
+    scroll-margin-top: 230px;
+  }
+
+  .process-note-content {
+    width: min(360px, 100%);
+  }
+
+  .process-note-content h1,
+  .process-note-content h2,
+  .process-note-content h3 {
+    font-size: 9.5pt;
+  }
+
+  .process-note-content h1,
+  .process-note-content h2 {
+    margin-bottom: 60px;
+  }
+
+  .process-note-content h3 {
+    margin-bottom: 40px;
+  }
+
+  .process-note-content p + p {
+    margin-top: 28px;
+  }
+
+  .process-note-section-costume .process-note-content h3 {
+    margin-top: 52px;
+    margin-bottom: 24px;
+  }
+
+  .process-note-section-costume .process-note-content p + h3 {
+    margin-top: 54px;
+  }
+
+  .process-note-section-costume .process-note-content p + p {
+    margin-top: 24px;
+  }
+
+
+  .cast-page {
+    padding-top: 132px;
+    font-size: 10.5pt;
+  }
+
+  .cast-section {
+    display: grid;
+    min-height: auto;
+    grid-template-columns: 1fr;
+  }
+
+  .cast-section::before {
+    display: none;
+  }
+
+  .cast-profile-image {
+    padding: 42px 20px;
+  }
+
+  .cast-profile-image img {
+    width: min(84vw, 360px);
+  }
+
+  .cast-list {
+    padding: 54px 20px 72px;
+    border-top: 1px solid rgba(23, 23, 23, 0.75);
+    font-size: 10.5pt;
+  }
+
+  .cast-list h1 {
+    margin-bottom: 42px;
+  }
+
+  .cast-list p + p {
+    margin-top: 18px;
+  }
+
+
+
+  .relationship-section {
+    min-height: auto;
+    padding: 58px 14px 72px;
+  }
+
+  .relationship-heading h2 {
+    margin-bottom: 16px;
+    font-size: 15pt;
+  }
+
+  .relationship-heading p {
+    width: min(310px, 100%);
+    margin-right: auto;
+    margin-left: auto;
+    font-size: 8.5pt;
+  }
+
+  .spoiler-button {
+    width: 62px;
+    height: 62px;
+    margin-top: 22px;
+  }
+
+  .relationship-map {
+    width: min(390px, 96vw);
+    height: 560px;
+  }
+
+  .relationship-person {
+    width: 76px;
+    font-size: 7.5pt;
+  }
+
+  .relationship-person img {
+    margin-bottom: 6px;
+  }
+
+  .person-lu-gui {
+    top: 50px;
+    left: 0;
+  }
+
+  .person-lu-shiping {
+    top: 50px;
+    left: 23%;
+  }
+
+  .person-zhou-puyuan {
+    top: 50px;
+    left: 54%;
+  }
+
+  .person-zhou-fanyi {
+    top: 50px;
+    right: 0;
+  }
+
+  .person-lu-dahai {
+    top: 238px;
+    left: 34%;
+  }
+
+  .person-zhou-ping {
+    top: 238px;
+    left: 53%;
+  }
+
+  .person-lu-sifeng {
+    top: 420px;
+    left: 13%;
+  }
+
+  .person-zhou-chong {
+    top: 420px;
+    right: 12%;
+  }
+
+
+
+  .cast-detail-section {
+    display: flex;
+    min-height: auto;
+    flex-direction: column;
+    padding: 58px 22px 64px;
+  }
+
+  .cast-detail-section::before {
+    display: none;
+  }
+
+  .cast-detail-text {
+    order: 2;
+    width: min(360px, 100%);
+    margin-top: 36px;
+    font-size: 10.5pt;
+    line-height: 1.75;
+    text-align: center;
+  }
+
+  .cast-detail-text p {
+    display: block;
+    text-align: center;
+  }
+
+  .cast-detail-text p + p {
+    margin-top: 16px;
+  }
+
+  .cast-detail-text span {
+    display: block;
+  }
+
+  .cast-detail-text span + span {
+    margin-top: 3px;
+  }
+
+  .cast-detail-continuation {
+    padding-left: 0;
+    text-align: center;
+  }
+
+  .cast-detail-image {
+    order: 1;
+    padding: 0;
+  }
+
+  .cast-detail-image img {
+    width: min(280px, 78vw);
   }
 
   .about-page {
