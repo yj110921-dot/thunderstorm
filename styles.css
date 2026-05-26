@@ -408,6 +408,37 @@ main {
   font-size: calc(1em + 1.5pt);
 }
 
+.blur-reveal {
+  opacity: 0;
+  filter: blur(18px);
+  transition:
+    opacity 1800ms cubic-bezier(0.22, 1, 0.36, 1),
+    filter 2200ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, filter;
+}
+
+.blur-reveal.is-visible {
+  opacity: 1;
+  filter: blur(0);
+}
+
+.slow-reveal {
+  opacity: 0;
+  filter: blur(8px);
+  transform: translateY(14px);
+  transition:
+    opacity 2200ms cubic-bezier(0.16, 1, 0.3, 1),
+    filter 2600ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 2600ms cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, filter, transform;
+}
+
+.slow-reveal.is-visible {
+  opacity: 1;
+  filter: blur(0);
+  transform: translateY(0);
+}
+
 .reveal-text {
   opacity: 0;
   filter: blur(4px);
@@ -434,6 +465,19 @@ main {
     transition: none;
   }
 
+
+  .slow-reveal {
+    opacity: 1;
+    filter: none;
+    transform: none;
+    transition: none;
+  }
+
+  .blur-reveal {
+    opacity: 1;
+    filter: none;
+    transition: none;
+  }
 
   .ink-reveal {
     opacity: 1;
@@ -481,10 +525,12 @@ main {
 
 .ticket-info h2 {
   margin-bottom: 54px;
+  text-align: center;
 }
 
 .ticket-info h3 {
   margin-bottom: 48px;
+  text-align: center;
 }
 
 .ticket-info p + p {
@@ -505,7 +551,7 @@ main {
 }
 
 .performance-layout-bottom {
-  border-bottom: 1px solid rgba(23, 23, 23, 0.75);
+  border-bottom: 0;
 }
 
 .poster-frame {
@@ -524,12 +570,14 @@ main {
 }
 
 .performance-info-panel,
-.poster-frame-right {
+.poster-frame-right,
+.synopsis-info {
   position: relative;
 }
 
 .performance-info-panel::before,
-.poster-frame-right::before {
+.poster-frame-right::before,
+.synopsis-info::before {
   content: "";
   position: absolute;
   top: 20px;
@@ -558,10 +606,54 @@ main {
   flex-direction: column;
   justify-content: center;
   padding: clamp(64px, 8vw, 120px) clamp(28px, 6vw, 82px);
+  text-align: center;
 }
 
 .poster-frame-right img {
   width: min(76%, 500px);
+}
+
+.synopsis-layout {
+  border-bottom: 1px solid rgba(23, 23, 23, 0.75);
+}
+
+.synopsis-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(72px, 8vw, 120px) clamp(32px, 6vw, 92px);
+  text-align: left;
+}
+
+.synopsis-info h2 {
+  margin-bottom: 72px;
+  text-align: center;
+}
+
+.synopsis-info p {
+  width: min(680px, 100%);
+  margin-right: auto;
+  margin-left: auto;
+  line-height: 2;
+}
+
+.synopsis-info p + p {
+  margin-top: 54px;
+}
+
+.moving-poster-panel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(64px, 7vw, 112px) clamp(28px, 5vw, 72px);
+}
+
+.moving-poster-video {
+  display: block;
+  width: min(76%, 500px);
+  height: auto;
+  background: #b8ed14;
+  object-fit: contain;
 }
 
 .site-footer {
@@ -617,6 +709,171 @@ main {
   margin: 0;
   font-size: clamp(48px, 10vw, 120px);
   font-weight: 400;
+}
+
+.about-page {
+  min-height: 100svh;
+  background: #ffffff;
+  color: #000000;
+  font-family: "KoPub Batang", "KoPub Batang Pro", "Noto Serif KR", serif;
+  font-size: 12pt;
+  font-weight: 300;
+  line-height: 1.85;
+}
+
+.about-hero {
+  display: flex;
+  min-height: clamp(360px, 45vw, 620px);
+  align-items: center;
+  justify-content: center;
+  padding: clamp(64px, 8vw, 110px) 24px 52px;
+  border-bottom: 0;
+}
+
+.about-hero-stage {
+  position: relative;
+  width: min(540px, 58vw);
+}
+
+.about-window {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.about-tennis-ball {
+  position: absolute;
+  right: 42%;
+  bottom: 5.8%;
+  display: block;
+  width: min(42px, 7.5vw);
+  height: auto;
+  transform: translateY(-580px) rotate(-40deg);
+  animation: tennis-fall 2100ms linear 360ms forwards;
+  will-change: transform;
+}
+
+@keyframes tennis-fall {
+  0% {
+    transform: translateY(-640px) rotate(-42deg);
+  }
+
+  58% {
+    transform: translateY(0) rotate(0deg);
+    animation-timing-function: cubic-bezier(0.12, 0.76, 0.34, 1);
+  }
+
+  68% {
+    transform: translateY(-18px) rotate(-8deg);
+  }
+
+  76% {
+    transform: translateY(0) rotate(0deg);
+  }
+
+  84% {
+    transform: translateY(-9px) rotate(5deg);
+  }
+
+  91% {
+    transform: translateY(0) rotate(0deg);
+  }
+
+  96% {
+    transform: translateY(-4px) rotate(-2deg);
+  }
+
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+}
+
+.about-body {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(320px, 1fr) minmax(300px, 1fr);
+  gap: clamp(60px, 8vw, 130px);
+  padding: clamp(86px, 9vw, 140px) clamp(48px, 8vw, 140px) 76px;
+  border-bottom: 1px solid rgba(23, 23, 23, 0.75);
+}
+
+.about-body::before {
+  content: "";
+  position: absolute;
+  top: 20px;
+  bottom: 20px;
+  left: 50%;
+  width: 1px;
+  background: rgba(23, 23, 23, 0.75);
+  pointer-events: none;
+}
+
+.about-text {
+  width: min(420px, 100%);
+  justify-self: center;
+}
+
+.about-text h1 {
+  width: 100%;
+  margin: 0 0 84px;
+  font: inherit;
+  font-weight: 400;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.about-text p {
+  margin: 0;
+  text-align: left;
+}
+
+.about-text p + p {
+  margin-top: 38px;
+}
+
+.about-visuals {
+  display: grid;
+  width: min(430px, 100%);
+  align-self: center;
+  justify-self: center;
+  gap: 72px;
+}
+
+.about-visuals img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.about-visual-fetus {
+  width: min(78%, 330px) !important;
+  justify-self: center;
+}
+
+.about-people {
+  position: absolute;
+  left: clamp(48px, 6vw, 112px);
+  bottom: 0;
+  display: block;
+  width: min(585px, 51vw);
+  height: auto;
+}
+
+.about-question {
+  display: flex;
+  min-height: 260px;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 24px 24px 128px;
+  border-bottom: 1px solid rgba(23, 23, 23, 0.75);
+  text-align: center;
+}
+
+.about-question p {
+  position: relative;
+  top: 0;
+  width: min(860px, 100%);
+  margin: 0;
 }
 
 @media (max-width: 920px) {
@@ -765,12 +1022,14 @@ main {
   }
 
   .performance-info-panel,
-  .poster-frame-right {
+  .poster-frame-right,
+  .synopsis-info {
     border-top: 1px solid rgba(23, 23, 23, 0.75);
   }
 
   .performance-info-panel::before,
-  .poster-frame-right::before {
+  .poster-frame-right::before,
+  .synopsis-info::before {
     display: none;
   }
 
@@ -779,7 +1038,8 @@ main {
   }
 
   .poster-frame img,
-  .poster-frame-right img {
+  .poster-frame-right img,
+  .moving-poster-video {
     width: min(82%, 360px);
   }
 
@@ -790,6 +1050,126 @@ main {
   .ticket-info {
     margin-top: 0;
     padding: 64px 20px;
+  }
+
+  .synopsis-info {
+    padding: 64px 24px;
+    text-align: center;
+  }
+
+  .synopsis-info h2 {
+    margin-bottom: 44px;
+  }
+
+  .synopsis-info p {
+    line-height: 1.9;
+    text-align: center;
+  }
+
+  .synopsis-info p + p {
+    margin-top: 34px;
+  }
+
+  .moving-poster-panel {
+    padding: 42px 20px 64px;
+  }
+
+  .about-page {
+    font-size: 10.5pt;
+    line-height: 1.85;
+  }
+
+  .about-hero {
+    min-height: 0;
+    padding: 34px 14px 36px;
+    border-bottom: 1px solid rgba(23, 23, 23, 0.75);
+  }
+
+  .about-hero-stage {
+    width: min(86vw, 360px);
+  }
+
+  .about-tennis-ball {
+    width: min(28px, 7.5vw);
+  }
+
+  .about-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding: 58px 26px 0;
+    border-bottom: 1px solid rgba(23, 23, 23, 0.75);
+  }
+
+  .about-body::before {
+    display: none;
+  }
+
+  .about-text {
+    display: contents;
+    width: 100%;
+  }
+
+  .about-text h1 {
+    order: 1;
+    margin: 0 0 46px;
+    text-align: center;
+  }
+
+  .about-text p {
+    width: min(100%, 360px);
+    margin-right: auto;
+    margin-left: auto;
+    text-align: center;
+  }
+
+  .about-text p + p {
+    margin-top: 0;
+  }
+
+  .about-text p:nth-of-type(1) { order: 2; }
+  .about-text p:nth-of-type(2) { order: 4; }
+  .about-text p:nth-of-type(3) { order: 6; }
+  .about-text p:nth-of-type(4) { order: 8; }
+  .about-text p:nth-of-type(5) { order: 10; }
+  .about-text p:nth-of-type(6) { order: 12; }
+  .about-text p:nth-of-type(7) { order: 14; }
+
+  .about-visuals {
+    display: contents;
+    width: 100%;
+  }
+
+  .about-visuals img {
+    width: min(100%, 360px);
+    margin: 42px auto 38px;
+  }
+
+  .about-visuals img:nth-child(1) { order: 3; }
+  .about-visuals img:nth-child(2) { order: 5; }
+  .about-visuals img:nth-child(3) { order: 7; }
+  .about-visuals img:nth-child(4) { order: 9; }
+  .about-visuals img:nth-child(5) { order: 13; }
+
+  .about-visual-fetus {
+    width: min(82%, 300px) !important;
+  }
+
+  .about-people {
+    position: static;
+    order: 15;
+    width: min(100%, 360px);
+    margin: 48px auto 0;
+  }
+
+  .about-question {
+    min-height: 220px;
+    padding: 58px 26px 82px;
+    font-size: 10.5pt;
+  }
+
+  .about-question p {
+    top: 0;
   }
 
   .site-footer {

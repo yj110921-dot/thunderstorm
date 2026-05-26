@@ -132,6 +132,19 @@
               <img src="./assets/posters/poster-figurative.png" alt="연극 뇌우 구상 포스터" />
             </figure>
           </div>
+
+          <div class="performance-layout synopsis-layout">
+            <div class="moving-poster-panel">
+              <video class="moving-poster-video" src="./assets/videos/moving-poster.mp4" muted loop playsinline preload="metadata" aria-label="연극 뇌우 무빙 포스터"></video>
+            </div>
+
+            <div class="synopsis-info">
+              <h2>시놉시스</h2>
+              <p>1920년, 거대한 광산을 소유한 대지주 조우푸위안은 엄격한 가장으로서 권위와 체면을 지키며 살아왔다. 그러나 어딘가 불안정해진 젊은 아내 조우판이의 태도와 오래전 자신이 묻어두었던 과거를 떠올리게 하는 사건들이 이어지면서 그는 서서히 불길한 균열을 감지한다.</p>
+              <p>한편, 큰아들 조우핑은 하녀 루쓰펑과 사랑에 빠진다. 하지만 두 사람 사이를 가로막는 것은 단지 신분의 차이만이 아니다. 조우핑을 붙잡으려는 새어머니 조우판이의 감정 역시 단순한 반대가 아닌, 위험한 욕망과 질투에서 비롯된 것이기 때문이다.</p>
+              <p>광산 파업을 주도하던 루쓰펑의 오빠 루다하이가 부상을 입고, 조우판이가 보낸 초대장을 계기로 어머니 루스핑이 딸을 데리러 조씨 가문을 찾아온다. 오랫동안 감춰져 있던 비밀이 드러나면서 인물들의 관계는 돌이킬 수 없는 파국으로 치닫는다.</p>
+            </div>
+          </div>
         </div>
       </section>
     </main>
@@ -185,6 +198,28 @@
         };
 
         requestAnimationFrame(moveRetriever);
+      }
+
+      const movingPosterVideo = document.querySelector(".moving-poster-video");
+
+      if (movingPosterVideo) {
+        if ("IntersectionObserver" in window) {
+          const videoObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.play().catch(() => {});
+              } else {
+                entry.target.pause();
+              }
+            });
+          }, {
+            threshold: 0.35,
+          });
+
+          videoObserver.observe(movingPosterVideo);
+        } else {
+          movingPosterVideo.play().catch(() => {});
+        }
       }
 
       const quoteTarget = document.querySelector(".home-quote p");
