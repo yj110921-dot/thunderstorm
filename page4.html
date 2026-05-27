@@ -3,8 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>연극 &lt;뇌우&gt;</title>
+    <title>연극 &lt;뇌우&gt; | Archive</title>
     <link rel="stylesheet" href="./styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="./supabase-config.js"></script>
   </head>
   <body>
     <header class="site-header" aria-label="홈페이지 헤더">
@@ -24,13 +26,25 @@
       </nav>
     </header>
 
-    <main class="subpage">
-      <section class="subpage-title">
-        <p>PAGE 4</p>
-        <h1>ARCHIVE</h1>
+    <main class="archive-page">
+      <section class="archive-upload-section" aria-labelledby="archive-title">
+        <div class="archive-upload-copy">
+          <h1 id="archive-title">&lt;뇌우&gt;와 관련한 이미지를 자유롭게 업로드하여 아카이빙 해보세요.</h1>
+          <p class="archive-note">부적절한 사진을 업로드할 시 관리자에 의해 삭제됩니다.</p>
+        </div>
+        <div id="upload-zone-root"></div>
+      </section>
+
+      <section class="archive-gallery-section" aria-label="업로드 이미지 갤러리">
+        <div id="gallery-root"></div>
       </section>
     </main>
-      <script>
+
+<footer class="site-footer">
+  <p>&lt;뇌우&gt;와 함께 해주셔서 감사합니다.</p>
+</footer>
+
+    <script>
       const header = document.querySelector(".site-header");
       let lastScrollY = window.scrollY;
 
@@ -48,6 +62,584 @@
 
         lastScrollY = currentScrollY;
       }, { passive: true });
+
+      const ArchiveApp = (() => {
+        const MAX_FILES = 5;
+        const MAX_SIZE = 5 * 1024 * 1024;
+        const MAX_LONG_EDGE = 1600;
+        const ALLOWED_TYPES = new Set(["image/jpeg", "image/png", "image/webp"]);
+        const ADMIN_EMAILS = new Set(["yj110921@gmail.com", "yejin11090@naver.com"]);
+        const LAYOUTS = ["featured", "portrait", "square", "square", "square", "square", "portrait", "wide", "square", "square", "featured", "portrait"];
+
+        const state = {
+          supabase: null,
+          session: null,
+          images: [],
+          lightboxImage: null,
+          pendingDelete: null,
+          error: "",
+          status: "",
+          isUploading: false,
+          isConfigured: false,
+        };
+
+        const uploadRoot = document.querySelector("#upload-zone-root");
+        const galleryRoot = document.querySelector("#gallery-root");
+
+        function config() {
+          return window.THUNDERSTORM_SUPABASE || {};
+        }
+
+        function hasValidSupabaseSettings(settings) {
+          return Boolean(
+            settings.url &&
+            settings.anonKey &&
+            window.supabase &&
+            !settings.url.includes("YOUR_PROJECT_REF") &&
+            settings.anonKey !== "YOUR_SUPABASE_ANON_KEY"
+          );
+        }
+
+        function bucketName() {
+          return config().bucket || "archive-images";
+        }
+
+        function uniqueId() {
+          if (window.crypto && crypto.randomUUID) {
+            return crypto.randomUUID();
+          }
+
+          return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+        }
+
+        function escapeHtml(value = "") {
+          return String(value).replace(/[&<>'"]/g, (character) => ({
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            "'": "&#39;",
+            '"': "&quot;",
+          }[character]));
+        }
+
+function isAdmin() {
+  const email = state.session?.user?.email?.toLowerCase();
+  return state.adminUnlocked || Boolean(email && ADMIN_EMAILS.has(email));
+}
+
+        function canDelete(image) {
+          const userId = state.session?.user?.id;
+          return isAdmin() || Boolean(userId && image.owner_id === userId);
+        }
+
+        function setError(message) {
+          state.error = message;
+          state.status = "";
+          renderUploadZone();
+        }
+
+        function setStatus(message) {
+          state.status = message;
+          state.error = "";
+          renderUploadZone();
+        }
+
+        function validateFiles(files) {
+          if (files.length > MAX_FILES) {
+            return `한 번에 최대 ${MAX_FILES}장까지 업로드할 수 있습니다.`;
+          }
+
+          for (const file of files) {
+            if (!ALLOWED_TYPES.has(file.type)) {
+              return "jpg, jpeg, png, webp 이미지만 업로드할 수 있습니다.";
+            }
+
+            if (file.size > MAX_SIZE) {
+              return "파일당 최대 5MB까지만 업로드할 수 있습니다.";
+            }
+          }
+
+          return "";
+        }
+
+        function loadImage(file) {
+          return new Promise((resolve, reject) => {
+            const image = new Image();
+            const url = URL.createObjectURL(file);
+
+            image.onload = () => {
+              URL.revokeObjectURL(url);
+              resolve(image);
+            };
+
+            image.onerror = () => {
+              URL.revokeObjectURL(url);
+              reject(new Error("이미지를 읽을 수 없습니다."));
+            };
+
+            image.src = url;
+          });
+        }
+
+        function canvasToBlob(canvas, type, quality) {
+          return new Promise((resolve) => {
+            canvas.toBlob((blob) => resolve(blob), type, quality);
+          });
+        }
+
+        async function compressImage(file) {
+          const image = await loadImage(file);
+          const scale = Math.min(1, MAX_LONG_EDGE / Math.max(image.naturalWidth, image.naturalHeight));
+          const width = Math.max(1, Math.round(image.naturalWidth * scale));
+          const height = Math.max(1, Math.round(image.naturalHeight * scale));
+          const canvas = document.createElement("canvas");
+          const context = canvas.getContext("2d", { alpha: false });
+
+          canvas.width = width;
+          canvas.height = height;
+          context.fillStyle = "#ffffff";
+          context.fillRect(0, 0, width, height);
+          context.drawImage(image, 0, 0, width, height);
+
+          let blob = await canvasToBlob(canvas, "image/webp", 0.82);
+          let extension = "webp";
+          let type = "image/webp";
+
+          if (!blob) {
+            blob = await canvasToBlob(canvas, "image/jpeg", 0.84);
+            extension = "jpg";
+            type = "image/jpeg";
+          }
+
+          if (!blob) {
+            throw new Error("이미지를 압축할 수 없습니다.");
+          }
+
+          if (blob.size > MAX_SIZE) {
+            blob = await canvasToBlob(canvas, "image/jpeg", 0.72);
+            extension = "jpg";
+            type = "image/jpeg";
+          }
+
+          if (!blob || blob.size > MAX_SIZE) {
+            throw new Error("압축 후에도 5MB를 초과합니다. 더 작은 이미지를 사용해주세요.");
+          }
+
+          return {
+            blob,
+            width,
+            height,
+            aspectRatio: Number((width / height).toFixed(6)),
+            extension,
+            type,
+          };
+        }
+
+        async function ensureUploadIdentity() {
+          const { data } = await state.supabase.auth.getSession();
+          if (data.session) {
+            state.session = data.session;
+            return;
+          }
+
+          try {
+            const { data: anonData, error } = await state.supabase.auth.signInAnonymously();
+            if (!error && anonData.session) {
+              state.session = anonData.session;
+            }
+          } catch (_) {
+            // Anonymous sign-in is optional. If disabled, uploads still work, but own-delete needs login.
+          }
+        }
+
+        async function fetchImages() {
+          const { data, error } = await state.supabase
+            .from("archive_images")
+            .select("id,image_url,storage_path,original_name,width,height,aspect_ratio,created_at,owner_id,owner_email")
+            .order("created_at", { ascending: false });
+
+          if (error) throw error;
+          state.images = data || [];
+          renderGalleryGrid();
+        }
+
+        async function uploadOne(file) {
+          const processed = await compressImage(file);
+          const id = uniqueId();
+          const storagePath = `${new Date().getFullYear()}/${id}.${processed.extension}`;
+          const bucket = state.supabase.storage.from(bucketName());
+
+          const { error: uploadError } = await bucket.upload(storagePath, processed.blob, {
+            contentType: processed.type,
+            cacheControl: "31536000",
+            upsert: false,
+          });
+
+          if (uploadError) throw uploadError;
+
+          const { data: publicUrlData } = bucket.getPublicUrl(storagePath);
+          const imageUrl = publicUrlData.publicUrl;
+          const user = state.session?.user || null;
+
+          const { data, error: insertError } = await state.supabase
+            .from("archive_images")
+            .insert({
+              image_url: imageUrl,
+              storage_path: storagePath,
+              original_name: file.name,
+              width: processed.width,
+              height: processed.height,
+              aspect_ratio: processed.aspectRatio,
+              owner_id: user?.id || null,
+              owner_email: user?.email || null,
+            })
+            .select("id,image_url,storage_path,original_name,width,height,aspect_ratio,created_at,owner_id,owner_email")
+            .single();
+
+          if (insertError) {
+            await bucket.remove([storagePath]);
+            throw insertError;
+          }
+
+          return data;
+        }
+
+        async function handleFiles(fileList) {
+          const files = Array.from(fileList || []);
+          if (!files.length || state.isUploading) return;
+
+          const validationError = validateFiles(files);
+          if (validationError) {
+            setError(validationError);
+            return;
+          }
+
+          state.isUploading = true;
+          setStatus("이미지를 압축하고 업로드하는 중입니다.");
+
+          try {
+            await ensureUploadIdentity();
+            const uploaded = [];
+
+            for (const file of files) {
+              uploaded.push(await uploadOne(file));
+            }
+
+            state.images = [...uploaded, ...state.images].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+            state.isUploading = false;
+            setStatus("업로드가 완료되었습니다.");
+            renderGalleryGrid();
+          } catch (error) {
+            state.isUploading = false;
+            setError(error.message || "업로드 중 문제가 발생했습니다.");
+          }
+        }
+
+function openAdminPasswordModal() {
+  state.adminPasswordOpen = true;
+  state.adminPasswordError = "";
+  renderGalleryGrid();
+}
+
+function closeAdminPasswordModal() {
+  state.adminPasswordOpen = false;
+  state.adminPasswordError = "";
+  renderGalleryGrid();
+}
+
+function unlockAdminPassword(password) {
+  if (password === ADMIN_PASSWORD) {
+    state.adminUnlocked = true;
+    state.adminPasswordOpen = false;
+    state.adminPasswordError = "";
+    localStorage.setItem(ADMIN_STORAGE_KEY, "1");
+    setStatus("관리자 모드가 활성화되었습니다.");
+    renderGalleryGrid();
+    return;
+  }
+
+  state.adminPasswordError = "비밀번호가 맞지 않습니다.";
+  renderGalleryGrid();
+}
+
+async function confirmDeleteImage() {
+
+          const image = state.pendingDelete;
+          if (!image) return;
+
+          try {
+            const bucket = state.supabase.storage.from(bucketName());
+            const { error: storageError } = await bucket.remove([image.storage_path]);
+            if (storageError) throw storageError;
+
+            const { error: dbError } = await state.supabase
+              .from("archive_images")
+              .delete()
+              .eq("id", image.id);
+
+            if (dbError) throw dbError;
+
+            state.images = state.images.filter((item) => item.id !== image.id);
+            state.pendingDelete = null;
+            state.lightboxImage = null;
+            renderGalleryGrid();
+          } catch (error) {
+            state.pendingDelete = null;
+            setError(error.message || "삭제 권한이 없거나 삭제 중 문제가 발생했습니다.");
+            renderGalleryGrid();
+          }
+        }
+
+function UploadZone() {
+  const disabled = !state.isConfigured || state.isUploading ? "disabled" : "";
+
+  return `
+    <form class="archive-upload" aria-label="이미지 업로드">
+      <label class="archive-upload-drop" for="archive-file-input">
+        <span>${state.isUploading ? "업로드 중" : "이미지 선택"}</span>
+        <small>JPG, PNG, WEBP / 5MB 이하 / 최대 5장 / 자동 압축</small>
+      </label>
+      <input id="archive-file-input" type="file" accept="image/jpeg,image/png,image/webp" multiple ${disabled} />
+      <p class="archive-upload-message ${state.error ? "is-error" : ""}" role="status" aria-live="polite">${escapeHtml(state.error || state.status)}</p>
+    </form>
+  `;
+}
+
+function ImageCard(image, index) {
+
+          const layout = LAYOUTS[index % LAYOUTS.length];
+          const ratio = Number(image.aspect_ratio || 1);
+          const deleteButton = canDelete(image) ? '<button class="archive-delete-button" type="button" data-delete-image aria-label="이미지 삭제">삭제</button>' : "";
+
+          return `
+            <figure class="archive-card archive-card--${layout}" style="--delay: ${Math.min(index * 45, 420)}ms;">
+              <button class="archive-image-button" type="button" data-image-id="${image.id}">
+                <img src="${image.image_url}" alt="${escapeHtml(image.original_name || `업로드된 아카이브 이미지 ${index + 1}`)}" loading="lazy" style="--image-ratio: ${ratio};" />
+              </button>
+              ${deleteButton}
+            </figure>
+          `;
+        }
+
+        function GalleryGrid() {
+          if (!state.isConfigured) {
+            return `
+              <div class="archive-empty" aria-live="polite">
+                <p>Supabase 설정이 필요합니다. supabase-config.js에 URL과 anon key를 입력해주세요.</p>
+              </div>
+            `;
+          }
+
+          if (!state.images.length) {
+            return `
+              <div class="archive-empty" aria-live="polite">
+                <p>아직 업로드된 이미지가 없습니다.</p>
+              </div>
+            `;
+          }
+
+          return `
+            <div class="archive-gallery">
+              ${state.images.map(ImageCard).join("")}
+            </div>
+          `;
+        }
+
+        function LightboxModal() {
+          if (!state.lightboxImage) return "";
+          const image = state.lightboxImage;
+          return `
+            <div class="archive-lightbox" role="dialog" aria-modal="true" aria-label="이미지 크게 보기">
+              <button class="archive-lightbox-backdrop" type="button" data-close-lightbox aria-label="닫기"></button>
+              <div class="archive-lightbox-frame">
+                <button class="archive-lightbox-close" type="button" data-close-lightbox aria-label="이미지 닫기">×</button>
+                <img src="${image.image_url}" alt="${escapeHtml(image.original_name || "선택한 아카이브 이미지")}" />
+              </div>
+            </div>
+          `;
+        }
+
+function DeleteConfirmModal() {
+  if (!state.pendingDelete) return "";
+  return `
+    <div class="archive-confirm" role="dialog" aria-modal="true" aria-label="이미지 삭제 확인">
+      <button class="archive-confirm-backdrop" type="button" data-cancel-delete aria-label="삭제 취소"></button>
+      <div class="archive-confirm-panel">
+        <p>이 이미지를 삭제할까요?</p>
+        <div>
+          <button type="button" data-confirm-delete>삭제</button>
+          <button type="button" data-cancel-delete>취소</button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function AdminPasswordModal() {
+  if (!state.adminPasswordOpen) return "";
+  return `
+    <div class="archive-confirm archive-admin-password" role="dialog" aria-modal="true" aria-label="관리자 인증">
+      <button class="archive-confirm-backdrop" type="button" data-close-admin-password aria-label="관리자 인증 닫기"></button>
+      <form class="archive-confirm-panel" data-admin-password-form>
+        <p>관리자 비밀번호</p>
+        <input id="archive-admin-password" type="password" inputmode="numeric" autocomplete="off" aria-label="관리자 비밀번호" />
+        <span>${escapeHtml(state.adminPasswordError)}</span>
+        <div>
+          <button type="submit">확인</button>
+          <button type="button" data-close-admin-password>취소</button>
+        </div>
+      </form>
+    </div>
+  `;
+}
+
+function renderUploadZone() {
+
+          uploadRoot.innerHTML = UploadZone();
+          const form = uploadRoot.querySelector(".archive-upload");
+          const input = uploadRoot.querySelector("#archive-file-input");
+          const drop = uploadRoot.querySelector(".archive-upload-drop");
+          const emailInput = uploadRoot.querySelector("#archive-admin-email");
+
+          form.addEventListener("submit", (event) => event.preventDefault());
+
+          if (input) {
+            input.addEventListener("change", () => {
+              handleFiles(input.files);
+              input.value = "";
+            });
+          }
+
+          if (drop) {
+            drop.addEventListener("dragover", (event) => {
+              event.preventDefault();
+              drop.classList.add("is-dragging");
+            });
+
+            drop.addEventListener("dragleave", () => drop.classList.remove("is-dragging"));
+
+            drop.addEventListener("drop", (event) => {
+              event.preventDefault();
+              drop.classList.remove("is-dragging");
+              handleFiles(event.dataTransfer.files);
+            });
+          }
+
+        }
+
+        function renderGalleryGrid() {
+          galleryRoot.innerHTML = GalleryGrid() + LightboxModal() + DeleteConfirmModal() + AdminPasswordModal();
+
+          galleryRoot.querySelectorAll(".archive-image-button").forEach((button) => {
+            button.addEventListener("click", () => {
+              state.lightboxImage = state.images.find((image) => image.id === button.dataset.imageId) || null;
+              renderGalleryGrid();
+            });
+          });
+
+          galleryRoot.querySelectorAll(".archive-delete-button").forEach((button) => {
+            button.addEventListener("click", (event) => {
+              event.stopPropagation();
+              const card = button.closest(".archive-card");
+              const imageButton = card?.querySelector(".archive-image-button");
+              state.pendingDelete = state.images.find((image) => image.id === imageButton?.dataset.imageId) || null;
+              renderGalleryGrid();
+            });
+          });
+
+          galleryRoot.querySelectorAll("[data-close-lightbox]").forEach((button) => {
+            button.addEventListener("click", closeLightbox);
+          });
+
+          galleryRoot.querySelectorAll("[data-cancel-delete]").forEach((button) => {
+            button.addEventListener("click", () => {
+              state.pendingDelete = null;
+              renderGalleryGrid();
+            });
+          });
+
+  galleryRoot.querySelector("[data-confirm-delete]")?.addEventListener("click", confirmDeleteImage);
+
+  galleryRoot.querySelectorAll("[data-close-admin-password]").forEach((button) => {
+    button.addEventListener("click", closeAdminPasswordModal);
+  });
+
+  galleryRoot.querySelector("[data-admin-password-form]")?.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const input = galleryRoot.querySelector("#archive-admin-password");
+    unlockAdminPassword(input?.value.trim() || "");
+  });
+
+  galleryRoot.querySelector("#archive-admin-password")?.focus();
+}
+
+        function closeLightbox() {
+          state.lightboxImage = null;
+          renderGalleryGrid();
+        }
+
+        function subscribeToChanges() {
+          state.supabase
+            .channel("archive-images-changes")
+            .on("postgres_changes", { event: "*", schema: "public", table: "archive_images" }, fetchImages)
+            .subscribe();
+        }
+
+        async function init() {
+          const settings = config();
+          state.isConfigured = hasValidSupabaseSettings(settings);
+          renderUploadZone();
+
+          if (!state.isConfigured) {
+            setError("Supabase 설정이 필요합니다.");
+            renderGalleryGrid();
+            return;
+          }
+
+          state.supabase = window.supabase.createClient(settings.url, settings.anonKey);
+          const { data } = await state.supabase.auth.getSession();
+          state.session = data.session;
+
+          state.supabase.auth.onAuthStateChange((_event, session) => {
+            state.session = session;
+            renderUploadZone();
+            renderGalleryGrid();
+          });
+
+          try {
+            await fetchImages();
+            subscribeToChanges();
+          } catch (error) {
+            setError("이미지 목록을 불러올 수 없습니다. Supabase 설정과 네트워크 상태를 확인해주세요.");
+            renderGalleryGrid();
+          }
+
+window.addEventListener("keydown", (event) => {
+  if (event.shiftKey && event.key.toLowerCase() === "d") {
+    const tagName = document.activeElement?.tagName?.toLowerCase();
+    if (tagName !== "input" && tagName !== "textarea") {
+      event.preventDefault();
+      openAdminPasswordModal();
+    }
+  }
+
+  if (event.key === "Escape") {
+    if (state.adminPasswordOpen) {
+      closeAdminPasswordModal();
+    } else if (state.pendingDelete) {
+      state.pendingDelete = null;
+      renderGalleryGrid();
+    } else if (state.lightboxImage) {
+      closeLightbox();
+    }
+  }
+});
+        }
+
+        return { init };
+      })();
+
+      ArchiveApp.init();
     </script>
   </body>
 </html>
