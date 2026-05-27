@@ -69,6 +69,8 @@
         const MAX_LONG_EDGE = 1600;
         const ALLOWED_TYPES = new Set(["image/jpeg", "image/png", "image/webp"]);
         const ADMIN_EMAILS = new Set(["yj110921@gmail.com", "yejin11090@naver.com"]);
+        const ADMIN_PASSWORD = "1234567890";
+        const ADMIN_STORAGE_KEY = "thunderstorm_archive_admin_unlocked";
         const LAYOUTS = ["featured", "portrait", "square", "square", "square", "square", "portrait", "wide", "square", "square", "featured", "portrait"];
 
         const state = {
@@ -81,6 +83,9 @@
           status: "",
           isUploading: false,
           isConfigured: false,
+          adminUnlocked: localStorage.getItem(ADMIN_STORAGE_KEY) === "1",
+          adminPasswordOpen: false,
+          adminPasswordError: "",
         };
 
         const uploadRoot = document.querySelector("#upload-zone-root");
@@ -485,7 +490,7 @@ function AdminPasswordModal() {
         <input id="archive-admin-password" type="password" inputmode="numeric" autocomplete="off" aria-label="관리자 비밀번호" />
         <span>${escapeHtml(state.adminPasswordError)}</span>
         <div>
-          <button type="submit">확인</button>
+          <button type="submit" data-unlock-admin>확인</button>
           <button type="button" data-close-admin-password>취소</button>
         </div>
       </form>
@@ -564,13 +569,32 @@ function renderUploadZone() {
     button.addEventListener("click", closeAdminPasswordModal);
   });
 
-  galleryRoot.querySelector("[data-admin-password-form]")?.addEventListener("submit", (event) => {
-    event.preventDefault();
-    const input = galleryRoot.querySelector("#archive-admin-password");
-    unlockAdminPassword(input?.value.trim() || "");
-  });
+const adminPasswordForm = galleryRoot.querySelector("[data-admin-password-form]");
+const adminPasswordInput = galleryRoot.querySelector("#archive-admin-password");
+const adminUnlockButton = galleryRoot.querySelector("[data-unlock-admin]");
 
-  galleryRoot.querySelector("#archive-admin-password")?.focus();
+const submitAdminPassword = () => {
+  unlockAdminPassword(adminPasswordInput?.value.trim() || "");
+};
+
+adminPasswordForm?.addEventListener("submit", (event) => {
+  event.preventDefault();
+  submitAdminPassword();
+});
+
+adminUnlockButton?.addEventListener("click", (event) => {
+  event.preventDefault();
+  submitAdminPassword();
+});
+
+adminPasswordInput?.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    submitAdminPassword();
+  }
+});
+
+adminPasswordInput?.focus();
 }
 
         function closeLightbox() {
