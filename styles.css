@@ -656,6 +656,63 @@ main {
   object-fit: contain;
 }
 
+.audience-credits {
+  padding: 54px 24px 18px;
+  background: #ffffff;
+  color: rgba(23, 23, 23, 0.6);
+  font-family: "Helvetica Neue", Arial, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+  font-size: 8.5pt;
+  font-weight: 300;
+  line-height: 1.65;
+}
+
+.audience-credits-inner {
+  width: min(1640px, 100%);
+  margin: 0 auto;
+}
+
+.audience-credits-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.audience-credits-table tbody {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  column-gap: clamp(28px, 5vw, 96px);
+}
+
+.audience-credits-table tr {
+  display: grid;
+  grid-column: auto;
+  grid-template-columns: 92px minmax(120px, 1fr) minmax(155px, 1.25fr);
+}
+
+.audience-credits-table tr:nth-child(n + 1):nth-child(-n + 6) {
+  grid-column: 1;
+}
+
+.audience-credits-table tr:nth-child(n + 7):nth-child(-n + 12) {
+  grid-column: 2;
+}
+
+.audience-credits-table tr:nth-child(n + 13):nth-child(-n + 18) {
+  grid-column: 3;
+}
+
+.audience-credits-table th,
+.audience-credits-table td {
+  padding: 2px 8px 2px 0;
+  font: inherit;
+  vertical-align: top;
+}
+
+.audience-credits-table th {
+  grid-row: span 6;
+  font-weight: 300;
+}
+
 .site-footer {
   padding: 140px 24px 56px;
   background: #ffffff;
@@ -2154,6 +2211,38 @@ main {
 
   .about-question p {
     top: 0;
+  }
+
+
+  .audience-credits {
+    padding: 68px 20px 12px;
+    font-size: 8pt;
+  }
+
+  .audience-credits-table tbody {
+    display: table-row-group;
+  }
+
+  .audience-credits-table tr {
+    display: table-row;
+  }
+
+  .audience-credits-table th,
+  .audience-credits-table td {
+    padding: 2px 8px 2px 0;
+  }
+
+  .audience-credits-table th {
+    width: 44px;
+  }
+
+  .audience-credits-table td:nth-child(2) {
+    width: 146px;
+  }
+
+  .audience-credits-table .audience-credits-group-start:not(:first-child) th,
+  .audience-credits-table .audience-credits-group-start:not(:first-child) td {
+    padding-top: 18px;
   }
 
   .site-footer {
