@@ -685,21 +685,31 @@ main {
 
 .audience-credits-table tr {
   display: grid;
-  grid-column: auto;
-  grid-template-columns: 92px minmax(120px, 1fr) minmax(155px, 1.25fr);
+  grid-template-columns: minmax(82px, max-content) minmax(160px, 1fr);
+  align-items: start;
 }
 
 .audience-credits-table tr:nth-child(n + 1):nth-child(-n + 6) {
   grid-column: 1;
+  grid-row: var(--credit-row);
 }
 
 .audience-credits-table tr:nth-child(n + 7):nth-child(-n + 12) {
   grid-column: 2;
+  grid-row: var(--credit-row);
 }
 
 .audience-credits-table tr:nth-child(n + 13):nth-child(-n + 18) {
   grid-column: 3;
+  grid-row: var(--credit-row);
 }
+
+.audience-credits-table tr:nth-child(6n + 1) { --credit-row: 1; }
+.audience-credits-table tr:nth-child(6n + 2) { --credit-row: 2; }
+.audience-credits-table tr:nth-child(6n + 3) { --credit-row: 3; }
+.audience-credits-table tr:nth-child(6n + 4) { --credit-row: 4; }
+.audience-credits-table tr:nth-child(6n + 5) { --credit-row: 5; }
+.audience-credits-table tr:nth-child(6n) { --credit-row: 6; }
 
 .audience-credits-table th,
 .audience-credits-table td {
@@ -709,8 +719,12 @@ main {
 }
 
 .audience-credits-table th {
-  grid-row: span 6;
+  grid-column: 1 / -1;
   font-weight: 300;
+}
+
+.audience-credits-table .audience-credits-group-start {
+  row-gap: 24px;
 }
 
 .site-footer {
